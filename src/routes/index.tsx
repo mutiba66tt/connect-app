@@ -1,29 +1,49 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/PhoneFrame";
-import { Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Zap, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Splash,
-  head: () => ({ meta: [{ title: "Welcome" }] }),
+  head: () => ({ meta: [{ title: "ConnectApp — Stay Connected" }] }),
 });
 
 function Splash() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const t = setTimeout(() => navigate({ to: "/login" }), 2200);
-    return () => clearTimeout(t);
-  }, [navigate]);
-
   return (
     <PhoneFrame>
-      <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center" style={{ background: "var(--gradient-primary)" }}>
-        <div className="h-24 w-24 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center animate-pulse">
-          <Sparkles className="h-12 w-12 text-white" />
+      <div
+        className="flex-1 flex flex-col items-center justify-between px-8 pt-24 pb-10 text-center relative overflow-hidden"
+        style={{ background: "var(--gradient-hero)" }}
+      >
+        {/* Decorative orbs */}
+        <div className="absolute -top-20 -right-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+
+        <div className="relative flex flex-col items-center gap-6">
+          <div className="h-24 w-24 rounded-3xl bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-2xl">
+            <Zap className="h-12 w-12 text-white" strokeWidth={2.4} />
+          </div>
+          <div>
+            <h1 className="text-5xl font-bold text-white tracking-tight">ConnectApp</h1>
+            <p className="text-white/80 mt-3 text-base max-w-xs">
+              Reach anyone, anywhere — in just one tap.
+            </p>
+          </div>
         </div>
-        <h1 className="text-4xl font-bold text-white tracking-tight">Lumi</h1>
-        <p className="text-white/80">Connect. Explore. Chat.</p>
-        <Link to="/login" className="absolute bottom-10 text-sm text-white/70 underline-offset-4 hover:underline">Skip</Link>
+
+        <div className="relative w-full flex flex-col gap-4">
+          <Button
+            asChild
+            className="w-full h-14 rounded-2xl text-base font-semibold bg-white text-primary hover:bg-white/95 shadow-xl"
+          >
+            <Link to="/register">
+              Get Started <ArrowRight className="h-5 w-5 ml-1" />
+            </Link>
+          </Button>
+          <Link to="/login" className="text-sm text-white/85 hover:text-white">
+            I already have an account
+          </Link>
+        </div>
       </div>
     </PhoneFrame>
   );
