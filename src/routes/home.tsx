@@ -63,10 +63,10 @@ function Home() {
             <div>
               <p className="text-white/75 text-xs uppercase tracking-widest">ConnectApp</p>
               <p className="text-white/85 text-sm mt-2">Good to see you,</p>
-              <h1 className="text-3xl font-bold mt-0.5 tracking-tight">Jane Doe</h1>
+              <h1 className="text-3xl font-bold mt-0.5 tracking-tight truncate max-w-[200px]">{displayName}</h1>
             </div>
             <div className="h-12 w-12 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center text-base font-semibold">
-              JD
+              {initials || "U"}
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ function Home() {
         {/* Logout */}
         <div className="p-6 pt-8">
           <Button
-            onClick={() => navigate({ to: "/login" })}
+            onClick={handleLogout}
             variant="outline"
             className="w-full h-12 rounded-2xl border-2 border-border hover:bg-secondary"
           >
