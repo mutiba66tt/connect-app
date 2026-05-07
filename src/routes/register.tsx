@@ -4,8 +4,11 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, Mail, Lock, ShieldCheck, Zap } from "lucide-react";
+import { User, Mail, Lock, ShieldCheck, Zap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { firebaseErrorMessage } from "@/lib/auth-errors";
 
 export const Route = createFileRoute("/register")({
   component: Register,
@@ -15,18 +18,29 @@ export const Route = createFileRoute("/register")({
 function Register() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
+  const [loading, setLoading] = useState(false);
 
   const onChange = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [k]: e.target.value });
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) {
       toast.error("Passwords do not match");
       return;
     }
-    toast.success("Welcome to ConnectApp!");
-    navigate({ to: "/home" });
+    setLoading(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      if (form.name) await updateProfile(cred.user, { displayName: form.name });
+      toast.success("Welcome to ConnectApp!");
+      navigate({ to: "/home" });
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      toast.error(firebaseErrorMessage(code));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -64,10 +78,11 @@ function Register() {
 
             <Button
               type="submit"
+              disabled={loading}
               className="w-full h-13 py-4 rounded-2xl text-base font-semibold mt-3 text-white"
               style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-soft)" }}
             >
-              Create Account
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Create Account"}
             </Button>
           </form>
 
