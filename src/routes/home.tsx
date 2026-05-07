@@ -1,7 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { Button } from "@/components/ui/button";
 import { Phone, MapPin, MessageCircle, LogOut, ShieldAlert, Headphones, ChevronRight } from "lucide-react";
+import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/home")({
   component: Home,
@@ -13,6 +17,29 @@ const SUPPORT_LOCATION = "ConnectApp HQ";
 
 function Home() {
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(auth.currentUser);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      if (!u) navigate({ to: "/login" });
+    });
+    return unsub;
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Signed out");
+      navigate({ to: "/login" });
+    } catch {
+      toast.error("Failed to sign out");
+    }
+  };
+
+  const displayName = user?.displayName || user?.email?.split("@")[0] || "Welcome";
+  const initials = (user?.displayName || user?.email || "U")
+    .split(/[\s@.]+/).filter(Boolean).slice(0, 2).map((s) => s[0]?.toUpperCase()).join("");
 
   const handleCall = () => { window.location.href = `tel:${SUPPORT_PHONE}`; };
   const handleMap = () => {

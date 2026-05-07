@@ -4,7 +4,11 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, Zap } from "lucide-react";
+import { Mail, Lock, Zap, Loader2 } from "lucide-react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { firebaseErrorMessage } from "@/lib/auth-errors";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -15,10 +19,21 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate({ to: "/home" });
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Welcome back!");
+      navigate({ to: "/home" });
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      toast.error(firebaseErrorMessage(code));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -70,10 +85,11 @@ function Login() {
 
             <Button
               type="submit"
+              disabled={loading}
               className="w-full h-13 py-4 rounded-2xl text-base font-semibold mt-2 text-white"
               style={{ background: "var(--gradient-primary)", boxShadow: "var(--shadow-soft)" }}
             >
-              Sign In
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
             </Button>
           </form>
 
