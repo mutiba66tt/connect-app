@@ -4,7 +4,7 @@ ConnectApp is a modern mobile-friendly web application built using Lovable and F
 
 ## Live Demo
 
-🔗 App URL: https://your-app-link.lovable.app
+🔗 App URL: https://id-preview--f48d5fe0-b48d-46ca-bea8-9b1ba19cf033.lovable.app/login
 
 > Users can open the link and test the application directly on mobile or desktop.
 
