@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { Button } from "@/components/ui/button";
 import { Phone, MapPin, MessageCircle, LogOut, ShieldAlert, Headphones, ChevronRight } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { toast } from "sonner";
@@ -53,34 +54,42 @@ function Home() {
       <div className="flex-1 flex flex-col bg-background">
         {/* Hero */}
         <div
-          className="px-7 pt-12 pb-20 text-white relative overflow-hidden"
+          className="px-7 pt-12 pb-24 text-white relative overflow-hidden"
           style={{ background: "var(--gradient-hero)" }}
         >
-          <div className="absolute -top-20 -right-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -top-20 -right-16 h-64 w-64 rounded-full bg-white/15 blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 h-56 w-56 rounded-full bg-fuchsia-400/20 blur-3xl" />
 
-          <div className="relative flex items-center justify-between">
-            <div>
-              <p className="text-white/75 text-xs uppercase tracking-widest">ConnectApp</p>
-              <p className="text-white/85 text-sm mt-2">Good to see you,</p>
-              <h1 className="text-3xl font-bold mt-0.5 tracking-tight truncate max-w-[200px]">{displayName}</h1>
+          <div className="relative flex items-center justify-between animate-fade-up">
+            <div className="flex items-center gap-2.5">
+              <Logo size={32} className="rounded-lg" />
+              <span className="text-sm font-semibold tracking-tight text-white/90">ConnectApp</span>
             </div>
-            <div className="h-12 w-12 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center text-base font-semibold">
+            <div className="h-11 w-11 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/25 flex items-center justify-center text-sm font-semibold shadow-lg">
               {initials || "U"}
             </div>
           </div>
+
+          <div className="relative mt-7 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+            <p className="text-white/80 text-sm">Good to see you,</p>
+            <h1 className="text-3xl font-bold mt-1 tracking-tight truncate">{displayName}</h1>
+          </div>
         </div>
 
-        {/* Welcome card */}
-        <div className="px-6 -mt-12 relative z-10">
+        {/* Glass welcome card */}
+        <div className="px-6 -mt-14 relative z-10 animate-fade-up" style={{ animationDelay: "0.15s" }}>
           <div
-            className="rounded-3xl p-5 border border-white/40"
-            style={{ background: "var(--gradient-card)", boxShadow: "var(--shadow-elegant)" }}
+            className="rounded-3xl p-5 border border-white/60 backdrop-blur-xl"
+            style={{ background: "linear-gradient(145deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))", boxShadow: "var(--shadow-elegant)" }}
           >
-            <p className="text-sm text-muted-foreground">Today's tip</p>
-            <p className="text-base font-semibold text-foreground mt-1 leading-snug">
-              Stay connected with your team — one tap is all it takes.
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary/80">Today's tip</p>
+                <p className="text-base font-semibold text-foreground mt-1.5 leading-snug">
+                  Stay connected with your team — one tap is all it takes.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

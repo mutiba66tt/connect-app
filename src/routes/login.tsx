@@ -4,7 +4,8 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, Zap, Loader2 } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { firebaseErrorMessage } from "@/lib/auth-errors";
@@ -40,21 +41,20 @@ function Login() {
     <PhoneFrame>
       <div className="flex-1 flex flex-col">
         <div
-          className="px-7 pt-14 pb-12 text-white relative overflow-hidden"
+          className="px-7 pt-14 pb-14 text-white relative overflow-hidden"
           style={{ background: "var(--gradient-hero)" }}
         >
-          <div className="absolute -top-16 -right-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" />
-          <div className="relative flex items-center gap-3">
-            <div className="h-11 w-11 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center">
-              <Zap className="h-5 w-5 text-white" strokeWidth={2.4} />
-            </div>
+          <div className="absolute -top-16 -right-10 h-56 w-56 rounded-full bg-white/15 blur-3xl" />
+          <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-fuchsia-400/20 blur-3xl" />
+          <div className="relative flex items-center gap-3 animate-fade-up">
+            <Logo size={44} className="rounded-xl" />
             <span className="text-lg font-semibold tracking-tight">ConnectApp</span>
           </div>
-          <h1 className="text-3xl font-bold mt-6 tracking-tight">Welcome back</h1>
-          <p className="text-white/80 mt-1.5 text-sm">Sign in to continue to your account</p>
+          <h1 className="text-3xl font-bold mt-7 tracking-tight animate-fade-up" style={{ animationDelay: "0.1s" }}>Welcome back</h1>
+          <p className="text-white/80 mt-1.5 text-sm animate-fade-up" style={{ animationDelay: "0.15s" }}>Sign in to continue to your account</p>
         </div>
 
-        <div className="px-7 pt-7 pb-8 flex-1 flex flex-col">
+        <div className="px-7 pt-7 pb-8 flex-1 flex flex-col -mt-6 bg-card rounded-t-[2rem] relative z-10 shadow-[0_-12px_40px_-20px_rgba(67,56,202,0.25)]">
           <form onSubmit={onSubmit} className="space-y-5 flex-1">
             <Field icon={<Mail className="h-4 w-4" />} label="Email">
               <Input
